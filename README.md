@@ -1,33 +1,35 @@
-# P7 — Concevez et analysez une base de données NoSQL
+# P7 — NoSQL Database Design and Analysis
 
-## Présentation du projet
+## Project Overview
 
-Ce projet a été réalisé dans le cadre du parcours **Data Engineer** d’OpenClassrooms.
+This project was completed as part of the **OpenClassrooms Data Engineer path**.
 
-L’objectif est de restaurer, analyser et concevoir une base de données NoSQL avec **MongoDB** pour l’association fictive **NosCités**, qui surveille les plateformes de locations courte durée afin d’évaluer leur impact sur l’offre de logements en France.
+The objective was to restore, analyze, and design a NoSQL database using **MongoDB** for a fictional non-profit organization called **NosCités**.
 
-Le projet se concentre principalement sur les données de locations courte durée à **Paris pendant l’été 2024**, dans le contexte des Jeux Olympiques, puis étend la réflexion à une architecture multi-sites entre **Paris** et **Lyon**.
+NosCités monitors short-term rental platforms in French cities in order to measure their impact on housing availability and provide transparency for public debate.
 
----
-
-## Contexte métier
-
-L’association NosCités souhaite produire des analyses fiables sur l’impact des plateformes de location courte durée sur le marché du logement.
-
-À la suite d’un crash de la base de données de Paris, une sauvegarde doit être restaurée, vérifiée et analysée rapidement afin de confirmer que les données sont cohérentes avec les besoins de l’équipe parisienne.
-
-Le projet répond donc à trois objectifs principaux :
-
-* restaurer une base de données MongoDB à partir d’une sauvegarde ;
-* analyser l’intégrité et la cohérence des données avec des requêtes MongoDB et Python ;
-* proposer une architecture NoSQL plus robuste avec réplication et distribution des données.
+The project focuses first on short-term rental listings in **Paris during summer 2024**, in the context of the Olympic Games, and then extends the architecture to a multi-city setup involving **Paris** and **Lyon**.
 
 ---
 
-## Structure du dépôt
+## Business Context
+
+NosCités experienced a major crash of its Paris rental database. A backup was available, but its reliability had to be verified before the Paris team could resume its analysis.
+
+The project had three main objectives:
+
+* restore the MongoDB database from a backup;
+* analyze the integrity and consistency of the data;
+* design a more resilient and scalable NoSQL architecture using replication and sharding.
+
+The final goal was to help the organization recover from the incident and prevent similar problems in the future.
+
+---
+
+## Repository Structure
 
 ```text
-p7-concevez-analysez-base-donnees-nosql/
+p7-nosql-database-design-analysis/
 ├── README.md
 ├── presentation/
 │   └── MotasemAbualqumboz_Concevez_et_analysez_une_base_de_donnees_NoSQL_090525.pptx
@@ -37,170 +39,172 @@ p7-concevez-analysez-base-donnees-nosql/
 
 ---
 
-## Livrable principal
+## Main Deliverable
 
-Le livrable officiel de ce projet est le support de présentation PowerPoint.
+The official deliverable for this project was the PowerPoint presentation.
 
-Il contient :
+The presentation includes:
 
-* le contexte du projet ;
-* les bénéfices du NoSQL dans ce cas d’usage ;
-* la restauration et l’exploration de la base MongoDB ;
-* les premières requêtes MongoDB ;
-* les analyses statistiques simples et complexes ;
-* la démarche de connexion à un outil de BI ;
-* la stratégie de réplication avec MongoDB Replica Set ;
-* la stratégie de distribution avec MongoDB Sharding ;
-* la vérification de la distribution Paris/Lyon.
+* the project context;
+* the benefits of using NoSQL and MongoDB;
+* MongoDB data restoration;
+* document structure analysis;
+* simple MongoDB queries and results;
+* advanced analysis with PyMongo and Polars;
+* BI connection with Tableau;
+* replica set design;
+* sharding strategy;
+* Paris/Lyon geo-distribution logic.
 
-Le notebook `polars.ipynb` est fourni comme support complémentaire pour la partie d’analyse avancée réalisée avec Python, PyMongo et Polars.
-
----
-
-## Partie 1 — Restauration et exploration de la base MongoDB
-
-La première partie du projet consiste à restaurer les données de locations courte durée de Paris dans MongoDB.
-
-Les principales tâches réalisées sont :
-
-* importation des données dans MongoDB ;
-* observation de la structure des documents ;
-* analyse des types de données ;
-* premières requêtes avec MongoDB ;
-* comptage du nombre total de documents ;
-* comptage des logements avec disponibilité.
-
-Résultats principaux :
-
-* 95 885 documents importés pour Paris ;
-* 76 747 logements avec `availability_365 > 0`.
+The notebook `polars.ipynb` is included as supporting material for the advanced analysis part.
 
 ---
 
-## Pourquoi MongoDB / NoSQL ?
+## Part 1 — MongoDB Restoration and Exploration
 
-MongoDB est adapté à ce projet car les données de locations courte durée sont semi-structurées et peuvent contenir des champs variés selon les annonces.
+The first part of the project focused on restoring the Paris short-term rental dataset into MongoDB.
 
-Les bénéfices principaux sont :
+Main tasks:
 
-* schéma flexible ;
-* gestion native des documents imbriqués ;
-* absence de jointures complexes pour les structures semi-structurées ;
-* requêtes efficaces sur des champs imbriqués ;
-* scalabilité horizontale avec le sharding ;
-* haute disponibilité avec les replica sets ;
-* bonne intégration avec des outils d’analyse et de BI.
+* importing the Paris dataset into MongoDB;
+* checking the structure of the documents;
+* identifying the fields and data types;
+* running first MongoDB queries;
+* counting the total number of documents;
+* counting listings with availability.
 
----
+Main results:
 
-## Partie 2 — Analyse de la base de données NoSQL
-
-La deuxième partie du projet consiste à produire des statistiques et indicateurs pour vérifier la cohérence des données avec l’équipe parisienne.
-
-Les requêtes MongoDB simples ont permis de calculer :
-
-* le nombre d’annonces par type de logement ;
-* les 5 annonces avec le plus grand nombre d’évaluations ;
-* le nombre total d’hôtes différents ;
-* le nombre et la proportion de locations réservables instantanément ;
-* les hôtes possédant plus de 100 annonces ;
-* le nombre et la proportion de super-hôtes.
-
-Résultats principaux :
-
-* 71 979 hôtes différents ;
-* 24 hôtes avec plus de 100 annonces ;
-* environ 14 % des hôtes sont des super-hôtes ;
-* environ 23 % des annonces sont réservables instantanément.
+* 95,885 Paris listing documents imported;
+* 76,747 listings with `availability_365 > 0`.
 
 ---
 
-## Analyses avancées avec PyMongo et Polars
+## Why MongoDB / NoSQL?
 
-Certaines analyses plus complexes ont été réalisées avec Python, PyMongo et Polars.
+MongoDB was suitable for this project because short-term rental data is semi-structured and may contain nested fields, arrays, and variable attributes depending on the listing.
 
-Le notebook `polars.ipynb` sert de support pour cette partie.
+Main benefits:
 
-Les analyses incluent :
-
-* taux de réservation moyen par mois par type de logement ;
-* médiane du nombre d’avis pour tous les logements ;
-* médiane du nombre d’avis par catégorie d’hôte ;
-* densité de logements par quartier de Paris ;
-* identification des quartiers avec le plus fort taux de réservation mensuel.
-
-Polars a été utilisé pour faciliter les calculs statistiques et les agrégations avancées en mémoire.
+* flexible document schema;
+* native support for nested documents and arrays;
+* no need for complex joins;
+* efficient querying on nested fields;
+* horizontal scalability with sharding;
+* high availability with replica sets;
+* good integration with analytics and BI tools.
 
 ---
 
-## Connexion à un outil de Business Intelligence
+## Part 2 — NoSQL Data Analysis
 
-Le projet inclut également une démarche de mise à disposition des données via un outil de BI.
+The second part of the project focused on producing indicators and statistics to validate the backup data with the Paris team.
 
-L’objectif était de permettre à l’équipe parisienne de visualiser les résultats de l’analyse et de continuer ses travaux plus facilement.
+Simple MongoDB queries were used to calculate:
 
-La présentation montre la connexion entre MongoDB et Tableau, ainsi qu’un exemple de tableau de bord.
+* the number of listings by room type;
+* the top 5 listings with the highest number of reviews;
+* the total number of unique hosts;
+* the number and proportion of instant-bookable listings;
+* hosts with more than 100 listings;
+* the number and proportion of superhosts.
 
----
+Main results:
 
-## Partie 3 — Conception d’une architecture NoSQL robuste
-
-La troisième partie du projet consiste à proposer une architecture plus résiliente et scalable.
-
-Cette architecture répond à deux enjeux :
-
-* éviter une nouvelle perte d’accès aux données en cas de panne ;
-* améliorer les performances de requêtes pour les équipes locales de Paris et Lyon.
-
----
-
-## Réplication avec MongoDB Replica Set
-
-Une stratégie de réplication a été conçue pour garantir une meilleure disponibilité des données.
-
-La logique retenue repose sur :
-
-* un nœud primaire ;
-* un nœud secondaire ;
-* un arbitre ;
-* un mécanisme de basculement automatique en cas de panne.
-
-La réplication permet :
-
-* d’améliorer la tolérance aux pannes ;
-* de garantir une copie des données sur plusieurs nœuds ;
-* de maintenir l’accès aux données en cas d’incident sur le serveur primaire.
+* 71,979 unique hosts;
+* 24 hosts with more than 100 listings;
+* around 14% of hosts were superhosts;
+* around 23% of listings were instant-bookable.
 
 ---
 
-## Distribution avec MongoDB Sharding
+## Advanced Analysis with PyMongo and Polars
 
-Une stratégie de sharding a été proposée afin de distribuer les données entre Paris et Lyon.
+More complex calculations were performed using Python, PyMongo, and Polars.
 
-Les données de Paris et Lyon sont réunies dans une seule collection `listings`, avec un champ `city` permettant de distinguer l’origine géographique des documents.
+The notebook `polars.ipynb` supports this part of the project.
 
-La clé de sharding utilisée est :
+Advanced analyses included:
+
+* average monthly reservation rate by room type;
+* median number of reviews across all listings;
+* median number of reviews by host category;
+* listing density by Paris neighborhood;
+* neighborhoods with the highest monthly reservation rate.
+
+Polars was used to perform efficient in-memory calculations and advanced aggregations.
+
+---
+
+## BI Connection
+
+The project also included a Business Intelligence connection.
+
+The goal was to make MongoDB data available to the Paris team through a BI tool so that they could continue their analysis more easily.
+
+The presentation shows the connection between MongoDB and Tableau, as well as dashboard screenshots.
+
+---
+
+## Part 3 — Robust NoSQL Architecture Design
+
+The third part of the project focused on designing a more resilient and scalable architecture.
+
+The architecture had to address two main needs:
+
+* protect the database from future incidents;
+* improve local query performance for Paris and Lyon teams.
+
+---
+
+## Replication with MongoDB Replica Set
+
+A replica set strategy was designed to improve data availability.
+
+The setup included:
+
+* one primary node;
+* one secondary node;
+* one arbiter node;
+* automatic failover in case the primary node becomes unavailable.
+
+Replication helps ensure:
+
+* better fault tolerance;
+* data redundancy across multiple nodes;
+* continued access to data during incidents;
+* safer recovery after server failure.
+
+---
+
+## Distribution with MongoDB Sharding
+
+A sharding strategy was designed to distribute the data between Paris and Lyon.
+
+Paris and Lyon listings were stored in a single collection called `listings`, with a `city` field used to distinguish the origin of each document.
+
+The selected shard key was:
 
 ```text
 city
 ```
 
-La stratégie de distribution repose sur une logique géographique :
+The distribution strategy was based on geographic locality:
 
-* les documents de Paris sont placés sur le shard Paris ;
-* les documents de Lyon sont placés sur le shard Lyon.
+* Paris listings are stored on the Paris shard;
+* Lyon listings are stored on the Lyon shard.
 
-Cette approche permet d’optimiser les performances des requêtes locales pour chaque équipe.
+This approach improves local query performance for each team.
 
-Résultat de distribution :
+Distribution results:
 
-* 95 885 documents sur le shard Paris ;
-* 9 973 documents sur le shard Lyon ;
-* 0 document orphelin.
+* 95,885 documents stored on the Paris shard;
+* 9,973 documents stored on the Lyon shard;
+* 0 orphan documents.
 
 ---
 
-## Technologies utilisées
+## Technologies Used
 
 * MongoDB
 * Mongosh
@@ -215,32 +219,31 @@ Résultat de distribution :
 
 ---
 
-## Compétences démontrées
+## Skills Demonstrated
 
-Ce projet démontre les compétences suivantes :
+This project demonstrates the following skills:
 
-* restauration d’une base MongoDB ;
-* compréhension des bénéfices du NoSQL ;
-* analyse de documents semi-structurés ;
-* écriture de requêtes MongoDB simples et complexes ;
-* utilisation de Python, PyMongo et Polars pour l’analyse avancée ;
-* connexion d’une base MongoDB à un outil de BI ;
-* conception d’une stratégie de réplication ;
-* conception d’une stratégie de sharding ;
-* réflexion sur la haute disponibilité, la scalabilité et la résilience d’une architecture NoSQL.
-
----
-
-## Remarque
-
-Les fichiers de données brutes ne sont pas inclus dans ce dépôt.
-
-Le livrable officiel du projet est le support de présentation. Le notebook Polars est ajouté comme élément complémentaire pour documenter une partie des calculs analytiques.
+* restoring a MongoDB database;
+* understanding NoSQL benefits and trade-offs;
+* analyzing semi-structured documents;
+* writing simple and advanced MongoDB queries;
+* using Python, PyMongo, and Polars for analytical calculations;
+* connecting MongoDB to a BI tool;
+* designing a replica set strategy;
+* designing a sharding strategy;
+* reasoning about high availability, scalability, resilience, and local data access.
 
 ---
 
-## Auteur
+## Note
+
+The raw datasets are not included in this repository.
+
+The official project deliverable was the PowerPoint presentation. The Polars notebook is included as complementary material to document part of the advanced analysis.
+
+---
+
+## Author
 
 Motasem Abualqumboz
-
 Data Engineer
